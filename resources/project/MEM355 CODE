@@ -1,0 +1,19 @@
+%setting up state space
+k=[0 0; 0 1000];
+d=[0 0; 0 2];
+T=[1 0];
+f=[-0.042857 -0.071429];
+m=[60.1429 18.5714; 18.5714 14.2857];
+aPart1=-k/m;
+aPart2=-d/m;
+bT= T/m;
+bF= f/m;
+a=[0 0 1 0; 0 0 0 1; 0 36.110 0 0.07222; 0 -116.9443 0 -0.23389];
+b=[0 0; 0 0; bT; bF];
+M=[1 0 0 0];
+%Question 2 Code
+[V,D]=eig(a);
+eigenvector1=a*V;
+[d, ind]= sort(diag(D));
+e=eig(a);
+
