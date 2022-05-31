@@ -1,0 +1,39 @@
+%constants set up
+k=[0 0; 0 1000];
+c=[0 0; 0 2];
+T=[1 0];
+m1=((120*20)/140)+33+10;
+m2=((120*20)/140)*0.5*1+10;
+m3=((120*20)/140)*(0.5^2)+10;
+%Question 5 Code
+ep=0.2;
+epsi=[];
+for ep=-0.2:0.0001:-0.1
+    x=((-20/140)*0.5)-((20/140)-ep)*0.5;
+    y=(-20/140)*0.5;
+    f=[x y];
+    m=[m1 m2; m2 m3];
+    aPart1=-k/m;
+    aPart2=-c/m;
+    bT=T/m;
+    bF= f/m;
+    a=[0 0 1 0; 0 0 0 1; 0 36.11 0 0.07222; 0 -116.94 0 -0.23389];
+    b=[0 0; 0 0; bT; bF];
+    M=[1 0 0 0];
+    epsi = [epsi;[ep rank(ctrb(a,b(:,2))) det(ctrb(a,b(:,2)))]];
+end
+plot(epsi(:,1),epsi(:,3)),title('Finding uncontrollability'),xlabel('epsilon'),ylabel('determinant of controllability')
+pause
+%Question 2 Code
+[V,D]=eig(a);
+eigenvector1=a*V;
+[d, ind]= sort(diag(D));
+%Question 6 code
+Gs = ss(a,b(:,2),eye(4),[0 0 0 0]');
+[y,t,x]=impulse(Gs,50);
+subplot(4,1,1), plot(t,x(:,1)), title('impulse-thrust response'),ylabel('torso position (rad)')
+subplot(4,1,2), plot(t,x(:,2)),ylabel('leg position (rad)')
+subplot(4,1,3), plot(t,x(:,3)),ylabel('torso velocity (rad/sec)')
+subplot(4,1,4), plot(t,x(:,4)),ylabel('leg velocity (rad/sec)'),
+xlabel('time(sec)')
+return
